@@ -1,6 +1,6 @@
 import { IDockviewHeaderActionsProps } from "dockview";
 import React from "react";
-import { Icon } from "./utils";
+import { Icon } from "../utils/utils";
 
 export const RightComponent = (props: IDockviewHeaderActionsProps) => {
   const [popout, setPopout] = React.useState<boolean>(
@@ -22,7 +22,7 @@ export const RightComponent = (props: IDockviewHeaderActionsProps) => {
       const group = props.containerApi.addGroup();
       props.group.api.moveTo({ group });
     } else {
-      const window = props.containerApi.addPopoutGroup(props.group, {
+      props.containerApi.addPopoutGroup(props.group, {
         popoutUrl: "/popout/index.html",
       });
     }

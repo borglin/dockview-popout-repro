@@ -2,47 +2,22 @@ import {
   DockviewApi,
   DockviewReact,
   DockviewReadyEvent,
-  IDockviewPanelProps,
   SerializedDockview,
 } from "dockview";
 import "dockview/dist/styles/dockview.css";
 import React from "react";
-import { PopoverMenu } from "./components/PopoverMenu.tsx";
 import { useLocalStorage } from "./hooks/useLocalStorage.tsx";
 import { loadDefaultLayout } from "./utils/loadDefaultLayout.tsx";
-import { usePanelWindowObject } from "./hooks/usePanelWindowObject.tsx";
 import { RightComponent } from "./components/RightComponent.tsx";
 import { Watermark } from "./Watermark.tsx";
 import { LeftComponent } from "./components/LeftComponent.tsx";
 import { Route, Routes } from "react-router";
 
 const components = {
-  default: (props: IDockviewPanelProps<{ title: string }>) => {
-    const _window = usePanelWindowObject(props.api);
-
-    const [reset, setReset] = React.useState<boolean>(false);
-
+  default: () => {
     return (
-      <div
-        style={{
-          height: "100%",
-          padding: "20px",
-          background: "var(--dv-group-view-background-color)",
-        }}
-      >
-        <button
-          onClick={() => {
-            console.log(_window);
-            setReset(true);
-            setTimeout(() => {
-              setReset(false);
-            }, 2000);
-          }}
-        >
-          Print
-        </button>
-        {!reset && <PopoverMenu window={_window} />}
-        {props.api.title}
+      <div>
+        Panel
       </div>
     );
   },
