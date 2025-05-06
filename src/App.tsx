@@ -2,6 +2,7 @@ import {
   DockviewApi,
   DockviewReact,
   DockviewReadyEvent,
+  IDockviewReactProps,
   SerializedDockview,
 } from "dockview";
 import "dockview/dist/styles/dockview.css";
@@ -15,9 +16,26 @@ import { Route, Routes } from "react-router";
 
 const components = {
   default: () => {
+    return <div>Panel</div>;
+  },
+};
+
+const tabComponents: IDockviewReactProps["tabComponents"] = {
+  default: (props) => {
+    const panelInstance = props.api.group.panels.find(
+      (p) => p.id === props.api.id
+    );
     return (
-      <div>
-        Panel
+      <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+        <div>{props.api.title}</div>
+        <button
+          style={{ appearance: "none", background: "none", border: "none", display: 'inline-flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          onClick={() =>
+            panelInstance && props.containerApi.addPopoutGroup(panelInstance)
+          }
+        >
+          <span style={{ color: 'white', fontSize: '18px' }} className="material-symbols-outlined">back_to_tab</span>
+        </button>
       </div>
     );
   },
@@ -89,6 +107,9 @@ export const App = (props: { theme?: string }) => {
               >
                 Clear
               </button>
+              <button onClick={() => localStorage.clear()}>
+                Clear storage
+              </button>
             </div>
             <div
               style={{
@@ -98,9 +119,11 @@ export const App = (props: { theme?: string }) => {
               <DockviewReact
                 onReady={onReady}
                 components={components}
+                tabComponents={tabComponents}
                 watermarkComponent={Watermark}
                 leftHeaderActionsComponent={LeftComponent}
                 rightHeaderActionsComponent={RightComponent}
+                defaultTabComponent={tabComponents.default}
                 className={`${props.theme || "dockview-theme-abyss"}`}
               />
             </div>
